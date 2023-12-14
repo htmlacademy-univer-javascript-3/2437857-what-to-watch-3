@@ -3,12 +3,12 @@ import FilmsList from '../../components/films-list/films-list';
 import Logo from '../../components/logo/logo';
 import { FilmType } from '../../types/film-type';
 import Tabs from '../../components/tabs/tabs';
-import { Review } from '../../types/review-type';
+import { ReviewType } from '../../types/review-type';
 
 export type FilmProps = {
   film: FilmType;
   similarFilms: FilmType[];
-  reviews: Review[];
+  reviews: ReviewType[];
 };
 
 function FilmPage({ film, similarFilms, reviews }: FilmProps): JSX.Element {
@@ -26,7 +26,7 @@ function FilmPage({ film, similarFilms, reviews }: FilmProps): JSX.Element {
             <ul className="user-block">
               <li className="user-block__item">
                 <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
+                  <img src="markup/img/avatar.jpg" alt="User avatar" width="63" height="63"/>
                 </div>
               </li>
               <li className="user-block__item">
