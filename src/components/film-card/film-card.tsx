@@ -1,20 +1,47 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Film } from '../../types/film';
+import VideoPlayer from '../videoplayer/videoplayer';
 
 type FilmCardProps = {
   film: Film;
-  setHoverId: Dispatch<SetStateAction<number | null>>;
 }
 
-function FilmCard({film, setHoverId}: FilmCardProps): JSX.Element {
+function FilmCard({film}: FilmCardProps): JSX.Element {
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const ms = 1000;
+
+  const onMouseEnter = () => {
+    const id = setTimeout(setIsPlaying, ms, true);
+    setTimeoutId(id);
+  };
+
+  const onMouseLeave = () => {
+    clearTimeout(timeoutId);
+    setIsPlaying(false);
+  };
+
   return (
     <article className="small-film-card catalog__films-card"
-      onMouseEnter={() => setHoverId(film.id)}
-      onMouseLeave={() => setHoverId(null)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className="small-film-card__image">
-        <img src={film.previewImage} alt={film.description} width={280} height={175}/>
+        {isPlaying ? (
+          <VideoPlayer
+            src={film.videoLink}
+            poster={film.previewImage}
+            muted
+          />
+        ) : (
+          <img
+            src={film.previewImage}
+            alt={film.description}
+            width="280"
+            height="175"
+          />
+        )}
       </div>
       <h3 className="small-film-card__title">
         <Link className="small-film-card__link" to={`/films/${film.id}`}>
