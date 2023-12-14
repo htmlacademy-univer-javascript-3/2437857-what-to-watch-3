@@ -1,8 +1,24 @@
-function PlayerPage(): JSX.Element {
+import { useNavigate } from 'react-router-dom';
+import { Film } from '../../types/film';
+
+export type PlayerProps = {
+  film: Film;
+};
+
+function Player({ film }: PlayerProps): JSX.Element {
+  const navigate = useNavigate();
   return (
     <div className="player">
-      <video src="#" className="player__video" poster="markup/img/player-poster.jpg"/>
-      <button type="button" className="player__exit">
+      <video
+        src={film.videoLink}
+        className="player__video"
+        poster={film.posterImage}
+      />
+      <button
+        type="button"
+        className="player__exit"
+        onClick={() => navigate(-1)}
+      >
         Exit
       </button>
       <div className="player__controls">
@@ -35,4 +51,4 @@ function PlayerPage(): JSX.Element {
   );
 }
 
-export default PlayerPage;
+export default Player;

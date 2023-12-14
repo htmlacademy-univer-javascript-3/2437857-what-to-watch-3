@@ -1,5 +1,4 @@
-
-export function SignInPage() {
+export function SignIn() {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -53,4 +52,4 @@ export function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default SignIn;

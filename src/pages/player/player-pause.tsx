@@ -1,4 +1,4 @@
-export function PlayerPausePage() {
+export function PlayerPause() {
   return (
     <div className="player">
       <video src="#" className="player__video" poster="markup/img/player-poster.jpg"></video>
@@ -35,4 +35,4 @@ export function PlayerPausePage() {
   );
 }
 
-export default PlayerPausePage;
+export default PlayerPause;
