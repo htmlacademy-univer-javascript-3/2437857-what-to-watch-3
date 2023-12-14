@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import { Film } from '../../types/film';
 import FilmCard from '../film-card/film-card';
 
@@ -7,16 +7,11 @@ export type FilmsListProps = {
 };
 
 function FilmsList({ propFilms }: FilmsListProps) {
-  const [, setHoverId] = useState<number | null>(null);
 
   return (
     <div className="catalog__films-list">
       {propFilms.map((film) => (
-        <FilmCard
-          key={film.id}
-          film={film}
-          setHoverId={setHoverId}
-        />
+        <FilmCard key={film.id} film={film} />
       ))}
     </div>
   );
