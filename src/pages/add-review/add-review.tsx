@@ -1,9 +1,9 @@
 import Logo from '../../components/logo/logo';
 import ReviewBase from '../../components/review-base/review-base';
-import { Film } from '../../types/film';
+import { FilmType } from '../../types/film-type';
 
 export type AddReviewProps = {
-  film: Film;
+  film: FilmType;
 };
 
 function AddReview({ film }: AddReviewProps): JSX.Element {

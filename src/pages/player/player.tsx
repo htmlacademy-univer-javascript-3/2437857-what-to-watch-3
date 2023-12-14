@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { Film } from '../../types/film';
+import { FilmType } from '../../types/film-type';
 
 export type PlayerProps = {
-  film: Film;
+  film: FilmType;
 };
 
 function Player({ film }: PlayerProps): JSX.Element {

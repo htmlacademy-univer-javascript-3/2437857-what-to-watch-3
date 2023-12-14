@@ -1,9 +1,9 @@
 import FilmsList from '../../components/films-list/films-list';
 import Logo from '../../components/logo/logo';
-import { Film } from '../../types/film';
+import { FilmType } from '../../types/film-type';
 
 export type MyListProps = {
-  films: Film[];
+  films: FilmType[];
 };
 
 function MyList({ films }: MyListProps): JSX.Element {
