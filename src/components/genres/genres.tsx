@@ -1,4 +1,4 @@
-import {DEFAULT_GENRE} from '../../const/genre-const';
+import {DEFAULT_GENRE} from '../../consts/genre-const';
 import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {useAppSelector} from '../../hooks/useAppSelector';
 import {setGenre} from '../../store/action';

@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import FilmsList from '../../components/films-list/films-list';
 import Logo from '../../components/logo/logo';
 import { FilmType } from '../../types/film-type';
 import Genres from '../../components/genres/genres';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import ShowMore from '../../components/show-more/show-more';
+import { DEFAULT_SHOWN_FILMS_NUM } from '../../consts/shown-const';
+
 
 const filterByGenre = (films: FilmType[], genre: string) => {
   if (genre === 'All genres') {
@@ -17,6 +21,15 @@ function Main(): JSX.Element {
   const films = useAppSelector((state) => state.films);
   const promoFilm = useAppSelector((state) => state.promoFilm);
   const genre = useAppSelector((state) => state.genre);
+  const [shownFilmsNum, setShownFilmsNum] = useState(DEFAULT_SHOWN_FILMS_NUM);
+
+  useEffect(() => {
+    setShownFilmsNum(DEFAULT_SHOWN_FILMS_NUM);
+  }, [genre]);
+
+  const onShowMoreClick = () => {
+    setShownFilmsNum(shownFilmsNum + DEFAULT_SHOWN_FILMS_NUM);
+  };
 
   const filteredFilms = filterByGenre(films, genre);
 
@@ -82,13 +95,11 @@ function Main(): JSX.Element {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <Genres />
 
-          <FilmsList propFilms={filteredFilms} />
+          <FilmsList propFilms={filteredFilms.slice(0, shownFilmsNum)} />;
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">
-              Show more
-            </button>
-          </div>
+          {shownFilmsNum < filteredFilms.length && (
+            <ShowMore onClick={onShowMoreClick} />
+          )}
         </section>
         <footer className="page-footer">
           <Logo footer />
