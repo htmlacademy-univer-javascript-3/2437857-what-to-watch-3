@@ -1,17 +1,12 @@
 import { Link } from 'react-router-dom';
 import FilmsList from '../../components/films-list/films-list';
 import Logo from '../../components/logo/logo';
-import { FilmType } from '../../types/film-type';
 import Tabs from '../../components/tabs/tabs';
-import { ReviewType } from '../../types/review-type';
+import { reviews } from '../../mocks/reviews';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
-export type FilmProps = {
-  film: FilmType;
-  similarFilms: FilmType[];
-  reviews: ReviewType[];
-};
-
-function FilmPage({ film, similarFilms, reviews }: FilmProps): JSX.Element {
+function FilmPage(): JSX.Element {
+  const [film, ...similarFilms] = useAppSelector((state) => state.films);
   return (
     <>
       <section className="film-card film-card--full">

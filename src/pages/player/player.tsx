@@ -1,12 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { FilmType } from '../../types/film-type';
-
-export type PlayerProps = {
-  film: FilmType;
-};
-
-function Player({ film }: PlayerProps): JSX.Element {
+import { useAppSelector } from '../../hooks/useAppSelector';
+function Player(): JSX.Element {
   const navigate = useNavigate();
+  const [film] = useAppSelector((state) => state.films);
   return (
     <div className="player">
       <video
