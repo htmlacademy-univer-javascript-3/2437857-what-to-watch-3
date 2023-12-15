@@ -1,12 +1,9 @@
 import Logo from '../../components/logo/logo';
 import ReviewBase from '../../components/review-base/review-base';
-import { FilmType } from '../../types/film-type';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
-export type AddReviewProps = {
-  film: FilmType;
-};
-
-function AddReview({ film }: AddReviewProps): JSX.Element {
+function AddReview(): JSX.Element {
+  const [film] = useAppSelector((state) => state.films);
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
