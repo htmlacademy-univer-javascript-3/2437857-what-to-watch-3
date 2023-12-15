@@ -12,20 +12,20 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
   const ms = 1000;
 
-  const onMouseEnter = () => {
+  const handleCardMouseEnter = () => {
     const id = setTimeout(setIsPlaying, ms, true);
     setTimeoutId(id);
   };
 
-  const onMouseLeave = () => {
+  const handleCardMouseLeave = () => {
     clearTimeout(timeoutId);
     setIsPlaying(false);
   };
 
   return (
     <article className="small-film-card catalog__films-card"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseEnter={handleCardMouseEnter}
+      onMouseLeave={handleCardMouseLeave}
     >
       <div className="small-film-card__image">
         {isPlaying ? (

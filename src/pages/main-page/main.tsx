@@ -18,20 +18,19 @@ const filterByGenre = (films: FilmType[], genre: string) => {
 };
 
 function Main(): JSX.Element {
-  const films = useAppSelector((state) => state.films);
-  const promoFilm = useAppSelector((state) => state.promoFilm);
-  const genre = useAppSelector((state) => state.genre);
+  const { films, genre } = useAppSelector((state) => state);
   const [shownFilmsNum, setShownFilmsNum] = useState(DEFAULT_SHOWN_FILMS_NUM);
 
   useEffect(() => {
     setShownFilmsNum(DEFAULT_SHOWN_FILMS_NUM);
   }, [genre]);
 
-  const onShowMoreClick = () => {
+  const handleShowMoreClick = () => {
     setShownFilmsNum(shownFilmsNum + DEFAULT_SHOWN_FILMS_NUM);
   };
 
   const filteredFilms = filterByGenre(films, genre);
+  const promoFilm = films[0];
 
   return (
     <>
@@ -98,7 +97,7 @@ function Main(): JSX.Element {
           <FilmsList propFilms={filteredFilms.slice(0, shownFilmsNum)} />;
 
           {shownFilmsNum < filteredFilms.length && (
-            <ShowMore onClick={onShowMoreClick} />
+            <ShowMore onClick={handleShowMoreClick} />
           )}
         </section>
         <footer className="page-footer">
