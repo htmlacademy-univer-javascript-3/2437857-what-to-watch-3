@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import FilmsList from '../../components/films-list/films-list';
 import Logo from '../../components/logo/logo';
-import { Film } from '../../types/film';
+import { FilmType } from '../../types/film-type';
 
 export type MainPageProps = {
-  promoFilm: Film;
-  films: Film[];
+  promoFilm: FilmType;
+  films: FilmType[];
 }
 
 export function Main({promoFilm, films}: MainPageProps): JSX.Element {

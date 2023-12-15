@@ -1,9 +1,9 @@
 
-import { Film } from '../../types/film';
+import { FilmType } from '../../types/film-type';
 import FilmCard from '../film-card/film-card';
 
 export type FilmsListProps = {
-  propFilms: Film[];
+  propFilms: FilmType[];
 };
 
 function FilmsList({ propFilms }: FilmsListProps) {

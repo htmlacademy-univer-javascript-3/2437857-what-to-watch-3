@@ -8,6 +8,7 @@ import MyList from '../../pages/my-list-page/my-list';
 import Player from '../../pages/player/player';
 import SignIn from '../../pages/sign-in/sign-in';
 import AuthorisedContent from '../authorised-content/authorised-content';
+import { reviews } from '../../mocks/reviews';
 
 function App({ promoFilm, films }: MainPageProps): JSX.Element {
   return (
@@ -23,7 +24,7 @@ function App({ promoFilm, films }: MainPageProps): JSX.Element {
             </AuthorisedContent>
           }
         />
-        <Route path="films/:id" element={<FilmPage film={films[1]} similarFilms={films.slice(1)} /> }/>
+        <Route path="films/:id" element={<FilmPage film={films[1]} reviews={reviews} similarFilms={films.slice(1)} /> }/>
         <Route path="films/:id/review" element={<AddReview film={films[0]} />}/>
         <Route path="player/:id" element={<Player film={films[0]} />} />
         <Route path="*" element={<NotFound/>}/>
