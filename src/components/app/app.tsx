@@ -7,24 +7,37 @@ import MyList from '../../pages/my-list-page/my-list';
 import Player from '../../pages/player/player';
 import SignIn from '../../pages/sign-in/sign-in';
 import AuthorisedContent from '../authorised-content/authorised-content';
+import { AppRoute } from '../../consts/route-consts';
+import Spinner from '../../pages/spinner/spinner';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 function App(): JSX.Element {
+  const { isDataLoading } = useAppSelector((state) => state);
+
+  if (isDataLoading) {
+    return <Spinner />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={AppRoute.Root}/>
         <Route index element={<Main />} />
-        <Route path="/login" element={<SignIn/>}/>
+        <Route path={AppRoute.Login} element={<SignIn />} />
         <Route
-          path="/mylist"
+          path={AppRoute.MyList}
           element={
             <AuthorisedContent>
               <MyList />
             </AuthorisedContent>
           }
         />
-        <Route path="films/:id" element={<FilmPage />} />
-        <Route path="films/:id/review" element={<AddReview />} />
-        <Route path="player/:id" element={<Player />} />
+        <Route path={`${AppRoute.Films}/:id`} element={<FilmPage />} />
+        <Route
+          path={`${AppRoute.Films}/:id/review`}
+          element={<AddReview />}
+        />
+        <Route path={`${AppRoute.Player}/:id`} element={<Player />} />
         <Route path="*" element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
