@@ -7,6 +7,8 @@ import Genres from '../../components/genres/genres';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import ShowMore from '../../components/show-more/show-more';
 import { DEFAULT_SHOWN_FILMS_NUM } from '../../consts/shown-const';
+import { AppRoute } from '../../consts/route-consts';
+import NotFound from '../four-oh-four/four-oh-four';
 
 
 const filterByGenre = (films: FilmType[], genre: string) => {
@@ -18,20 +20,22 @@ const filterByGenre = (films: FilmType[], genre: string) => {
 };
 
 function Main(): JSX.Element {
-  const { films, genre } = useAppSelector((state) => state);
+  const { films, genre, promoFilm } = useAppSelector((state) => state);
   const [shownFilmsNum, setShownFilmsNum] = useState(DEFAULT_SHOWN_FILMS_NUM);
 
   useEffect(() => {
     setShownFilmsNum(DEFAULT_SHOWN_FILMS_NUM);
   }, [genre]);
 
+  if (!promoFilm) {
+    return <NotFound />;
+  }
+
   const handleShowMoreClick = () => {
     setShownFilmsNum(shownFilmsNum + DEFAULT_SHOWN_FILMS_NUM);
   };
 
   const filteredFilms = filterByGenre(films, genre);
-  const promoFilm = films[0];
-
   return (
     <>
       <section className="film-card">
@@ -71,7 +75,7 @@ function Main(): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <Link to={`/player/${promoFilm.id}`} className="btn btn--play film-card__button" type="button">
+                <Link to={`${AppRoute.Player}/${promoFilm.id}`} className="btn btn--play film-card__button" type="button">
                   <svg viewBox="0 0 19 19" width={19} height={19}>
                     <use xlinkHref="#play-s"/>
                   </svg>

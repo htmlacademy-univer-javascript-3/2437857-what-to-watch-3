@@ -8,13 +8,14 @@ import Player from '../../pages/player/player';
 import SignIn from '../../pages/sign-in/sign-in';
 import AuthorisedContent from '../authorised-content/authorised-content';
 import { AppRoute } from '../../consts/route-consts';
+import { AuthorizationStatus } from '../../consts/auth-consts';
 import Spinner from '../../pages/spinner/spinner';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 function App(): JSX.Element {
-  const { isDataLoading } = useAppSelector((state) => state);
+  const { isDataLoading, authorizationStatus } = useAppSelector((state) => state);
 
-  if (isDataLoading) {
+  if (isDataLoading || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
 
@@ -35,7 +36,11 @@ function App(): JSX.Element {
         <Route path={`${AppRoute.Films}/:id`} element={<FilmPage />} />
         <Route
           path={`${AppRoute.Films}/:id/review`}
-          element={<AddReview />}
+          element={
+            <AuthorisedContent>
+              <AddReview />
+            </AuthorisedContent>
+          }
         />
         <Route path={`${AppRoute.Player}/:id`} element={<Player />} />
         <Route path="*" element={<NotFound/>}/>
