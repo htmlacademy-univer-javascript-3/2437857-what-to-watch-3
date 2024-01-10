@@ -1,20 +1,9 @@
 import axios, {AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse,} from 'axios';
-//import { toast } from 'react-toastify';
-import { StatusCodes } from 'http-status-codes';
+import { BACKEND_URL, REQUEST_TIMEOUT, StatusCodeMapping } from '../consts/api-consts';
 import { getToken } from './token';
+import { processErrorHandle} from './error-handler';
 
-
-const StatusCodeMapping: Record<number, boolean> = {
-  [StatusCodes.BAD_REQUEST]: true,
-  [StatusCodes.UNAUTHORIZED]: true,
-  [StatusCodes.NOT_FOUND]: true,
-};
-
-const errorDisplayFlag = (response: AxiosResponse) => StatusCodeMapping[response.status];
-
-
-const BACKEND_URL = 'https://13.react.pages.academy/wtw';
-const REQUEST_TIMEOUT = 5000;
+const errorIndicator = (response: AxiosResponse) => !!StatusCodeMapping[response.status];
 
 export const createAPI = (): AxiosInstance => {
   const api = axios.create({
@@ -34,9 +23,8 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
-      if (error.response && errorDisplayFlag(error.response)) {
-        //toast.warn(error.response.data.error);
-        return 1;
+      if (error.response && errorIndicator(error.response)) {
+        processErrorHandle(error.message);
       }
 
       throw error;

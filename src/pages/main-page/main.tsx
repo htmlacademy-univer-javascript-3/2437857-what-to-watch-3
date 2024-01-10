@@ -9,6 +9,7 @@ import ShowMore from '../../components/show-more/show-more';
 import { DEFAULT_SHOWN_FILMS_NUM } from '../../consts/shown-const';
 import { AppRoute } from '../../consts/route-consts';
 import NotFound from '../four-oh-four/four-oh-four';
+import UserBlock from '../../components/user-block/user-block';
 
 
 const filterByGenre = (films: FilmType[], genre: string) => {
@@ -16,7 +17,7 @@ const filterByGenre = (films: FilmType[], genre: string) => {
     return films.slice();
   }
 
-  return films.filter((movie) => movie.genre === genre);
+  return films.filter((f) => f.genre === genre);
 };
 
 function Main(): JSX.Element {
@@ -45,17 +46,7 @@ function Main(): JSX.Element {
         <h1 className="visually-hidden">WTW</h1>
         <header className="page-header film-card__head">
           <Logo />
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="markup/img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <UserBlock />
         </header>
         <div className="film-card__wrap">
           <div className="film-card__info">
