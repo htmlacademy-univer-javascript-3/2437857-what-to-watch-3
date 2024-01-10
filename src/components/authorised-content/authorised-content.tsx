@@ -10,7 +10,6 @@ export type AuthorisedContentProps = {
 function AuthorisedContent({ children }: AuthorisedContentProps): JSX.Element {
   const { authorizationStatus } = useAppSelector((state) => state);
   return (authorizationStatus === AuthorizationStatus.Auth) ? children : <Navigate to={AppRoute.Login} />;
-
 }
 
 export default AuthorisedContent;

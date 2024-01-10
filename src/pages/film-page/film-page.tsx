@@ -2,7 +2,6 @@ import { Link, useParams } from 'react-router-dom';
 import FilmsList from '../../components/films-list/films-list';
 import Logo from '../../components/logo/logo';
 import Tabs from '../../components/tabs/tabs';
-import { reviews } from '../../mocks/reviews';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { AppRoute } from '../../consts/route-consts';
 import { AuthorizationStatus } from '../../consts/auth-consts';
@@ -13,7 +12,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 function FilmPage(): JSX.Element {
   const { id } = useParams();
-  const { film, similarFilms, authorizationStatus } = useAppSelector((state) => state);
+  const { film, reviews, similarFilms, authorizationStatus } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   useEffect(() => {
     const filmId = Number(id);

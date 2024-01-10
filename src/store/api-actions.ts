@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {AppDispatch, State} from '../types/state';
+import {AppDispatch, State } from '../types/state';
 import {FilmType} from '../types/film-type';
 import {
   setDataLoadingStatus,
@@ -11,11 +11,13 @@ import {
   setFilm,
   setSimilarFilms,
   setPromoFilm,
+  setReviews,
 } from './action';
 import { APIRoute, AppRoute } from '../consts/route-consts';
 import { AuthorizationStatus } from '../consts/auth-consts';
 import { AuthData } from '../types/auth-data';
 import { UserType } from '../types/user-type';
+import { ReviewType} from '../types/review-type';
 import { dropToken, saveToken } from '../services/token';
 
 
@@ -83,10 +85,10 @@ export const fetchFilmDetailsAction = createAsyncThunk<
   const { data: film } = await api.get<FilmType>(filmRoute);
   dispatch(setFilm(film));
 
-  // const { data: reviews } = await api.get<Comment[]>(
-  //   `${APIRoute.Comments}/${filmId}`
-  // );
-  // dispatch(setReviews(comments));
+  const { data: reviews } = await api.get<ReviewType[]>(
+    `${APIRoute.Comments}/${filmId}`
+  );
+  dispatch(setReviews(reviews));
 
   const { data: similarFilms } = await api.get<FilmType[]>(
     `${filmRoute}${APIRoute.Similar}`
@@ -111,6 +113,37 @@ export const fetchPromoFilmAction = createAsyncThunk<
   dispatch(setDataLoadingStatus(false));
 });
 
+export const postReviewAction = createAsyncThunk<
+  void,
+  { text: string; rating: number; filmId: number },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'data/postReview',
+  async ({ text, rating, filmId }, { dispatch, extra: api }) => {
+    await api.post(`${APIRoute.Comments}/${filmId}`, {
+      text,
+      rating,
+    });
+    dispatch(fetchFilmDetailsAction(filmId));
+    dispatch(redirectToRoute(`${AppRoute.Films}/${filmId}`));
+  }
+);
+
+export const fetchFavoriteFilmsAction = createAsyncThunk<
+  FilmType[],
+  undefined,
+  {
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchFavoriteFilms', async (_arg, { extra: api }) => {
+  const { data } = await api.get<FilmType[]>(`${APIRoute.Favorite}`);
+  return data;
+});
 
 export const loginAction = createAsyncThunk<
   void,
@@ -145,3 +178,5 @@ export const logoutAction = createAsyncThunk<
   dispatch(setUser(null));
   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
 });
+
+

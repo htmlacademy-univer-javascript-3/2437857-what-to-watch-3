@@ -1,5 +1,4 @@
 import { FilmType } from '../../../types/film-type';
-
 type DetailsProps = {
   film: FilmType;
 };
