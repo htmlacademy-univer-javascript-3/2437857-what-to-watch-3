@@ -13,7 +13,6 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
   const navigate = useNavigate();
   const ms = 1000;
-
   const handleCardMouseEnter = () => {
     const id = setTimeout(setIsPlaying, ms, true);
     setTimeoutId(id);
@@ -33,7 +32,7 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
       <div className="small-film-card__image">
         {isPlaying ? (
           <VideoPlayer
-            src={film.videoLink}
+            src={film.previewVideoLink}
             poster={film.previewImage}
             muted
           />
@@ -48,7 +47,7 @@ function FilmCard({film}: FilmCardProps): JSX.Element {
       </div>
       <h3 className="small-film-card__title">
         <Link className="small-film-card__link" to={`${AppRoute.Films}/${film.id}`}>
-          {film.title}
+          {film.name}
         </Link>
       </h3>
     </article>

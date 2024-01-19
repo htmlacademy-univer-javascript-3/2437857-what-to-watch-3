@@ -10,10 +10,14 @@ import { DEFAULT_SHOWN_FILMS_NUM } from '../../consts/shown-const';
 import { AppRoute } from '../../consts/route-consts';
 import NotFound from '../four-oh-four/four-oh-four';
 import UserBlock from '../../components/user-block/user-block';
+import {DEFAULT_GENRE} from '../../consts/genre-const';
+import {getFilms, getGenre, getPromoFilm} from '../../store/main/main-selectors';
+import Button from '../../components/my-list-details/button';
+import Footer from '../../components/footer/footer';
 
 
 const filterByGenre = (films: FilmType[], genre: string) => {
-  if (genre === 'All genres') {
+  if (genre === DEFAULT_GENRE) {
     return films.slice();
   }
 
@@ -21,7 +25,9 @@ const filterByGenre = (films: FilmType[], genre: string) => {
 };
 
 function Main(): JSX.Element {
-  const { films, genre, promoFilm } = useAppSelector((state) => state);
+  const films = useAppSelector(getFilms);
+  const promoFilm = useAppSelector(getPromoFilm);
+  const genre = useAppSelector(getGenre);
   const [shownFilmsNum, setShownFilmsNum] = useState(DEFAULT_SHOWN_FILMS_NUM);
 
   useEffect(() => {
@@ -41,7 +47,7 @@ function Main(): JSX.Element {
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={promoFilm.backgroundImage} alt={promoFilm.title} />
+          <img src={promoFilm.posterImage} alt={promoFilm.name} />
         </div>
         <h1 className="visually-hidden">WTW</h1>
         <header className="page-header film-card__head">
@@ -52,17 +58,17 @@ function Main(): JSX.Element {
           <div className="film-card__info">
             <div className="film-card__poster">
               <img
-                src={promoFilm.posterImage}
-                alt={promoFilm.title}
+                src={promoFilm.backgroundImage}
+                alt={promoFilm.name}
                 width={218}
                 height={327}
               />
             </div>
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promoFilm.title}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{promoFilm.genre}</span>
-                <span className="film-card__year">{promoFilm.year}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -72,13 +78,7 @@ function Main(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width={19} height={20}>
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button>
+                <Button film={promoFilm} isPromo />
               </div>
             </div>
           </div>
@@ -89,19 +89,13 @@ function Main(): JSX.Element {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <Genres />
 
-          <FilmsList propFilms={filteredFilms.slice(0, shownFilmsNum)} />;
+          <FilmsList propFilms={filteredFilms.slice(0, shownFilmsNum)} />
 
           {shownFilmsNum < filteredFilms.length && (
             <ShowMore onClick={handleShowMoreClick} />
           )}
         </section>
-        <footer className="page-footer">
-          <Logo footer />
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer/>
       </div>
     </>
   );

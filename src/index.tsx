@@ -3,24 +3,21 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { store } from './store';
-import { fetchFilmsAction, fetchPromoFilmAction } from './store/api-actions';
-import { checkAuthAction } from './store/api-actions';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-store.dispatch(fetchPromoFilmAction());
-store.dispatch(fetchFilmsAction());
-
-store.dispatch(checkAuthAction());
+import {checkAuthAction, fetchFavoriteFilmsAction, fetchFilmsAction, fetchPromoFilmAction} from './store/api-actions';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+store.dispatch(fetchPromoFilmAction());
+store.dispatch(fetchFilmsAction());
+store.dispatch(fetchFavoriteFilmsAction());
+store.dispatch(checkAuthAction());
+
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ToastContainer />
       <App />
     </Provider>
   </React.StrictMode>
