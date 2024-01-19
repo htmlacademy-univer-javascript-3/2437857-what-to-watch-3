@@ -4,7 +4,7 @@ import { AuthorizationStatus } from '../consts/auth-consts';
 import { UserType } from '../types/user-type';
 import { ReviewType } from '../types/review-type';
 
-export const setGenre = createAction<{ genre: string }>('film/setGenre');
+export const setGenre = createAction<string>('main/setGenre');
 export const setFilms = createAction<FilmType[]>('data/setFilms');
 export const setFilm = createAction<FilmType>('data/setFilm');
 export const setPromoFilm = createAction<FilmType>('data/setPromoFilm');

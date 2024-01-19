@@ -5,22 +5,27 @@ import Tabs from '../../components/tabs/tabs';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { AppRoute } from '../../consts/route-consts';
 import { AuthorizationStatus } from '../../consts/auth-consts';
-import { useEffect } from 'react';
-import { fetchFilmDetailsAction } from '../../store/api-actions';
 import NotFound from '../four-oh-four/four-oh-four';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import {getFilm, getComments, getSimilar, isFilmDataLoading} from '../../store/film/film-selectors';
+import {getAuthorizationStatus} from '../../store/user/user-selectors';
+import {useFilm} from '../../hooks/useFilmDetails';
+import Spinner from '../spinner/spinner';
+import UserBlock from '../../components/user-block/user-block';
+import Button from '../../components/my-list-details/button';
 
 function FilmPage(): JSX.Element {
-  const { id } = useParams();
-  const { film, reviews, similarFilms, authorizationStatus } = useAppSelector((state) => state);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    const filmId = Number(id);
-    if (filmId && (!film || film.id !== filmId)) {
-      dispatch(fetchFilmDetailsAction(filmId));
-    }
-  }, [dispatch, film, id]);
+  const id = useParams().id || '';
+  const film = useAppSelector(getFilm);
+  const reviews = useAppSelector(getComments);
+  const similarFilms = useAppSelector(getSimilar);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isDataLoading = useAppSelector(isFilmDataLoading);
 
+  useFilm(id, film, true);
+
+  if (isDataLoading) {
+    return <Spinner />;
+  }
   if (!film) {
     return <NotFound />;
   }
@@ -29,29 +34,20 @@ function FilmPage(): JSX.Element {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.backgroundImage} alt={film.title} />
+            <img src={film.backgroundImage} alt={film.name} />
           </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header film-card__head">
             <Logo />
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="markup/img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <UserBlock/>
           </header>
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{film.title}</h2>
+              <h2 className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{film.genre}</span>
-                <span className="film-card__year">{film.year}</span>
+                <span className="film-card__year">{film.released}</span>
               </p>
               <div className="film-card__buttons">
                 <Link
@@ -62,13 +58,7 @@ function FilmPage(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width={19} height={20}>
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button>
+                <Button film={film}/>
                 {authorizationStatus === AuthorizationStatus.Auth && (
                   <Link
                     to={`${AppRoute.Films}/${film.id}/review`}
@@ -86,7 +76,7 @@ function FilmPage(): JSX.Element {
             <div className="film-card__poster film-card__poster--big">
               <img
                 src={film.posterImage}
-                alt={film.title}
+                alt={film.name}
                 width={218}
                 height={327}
               />

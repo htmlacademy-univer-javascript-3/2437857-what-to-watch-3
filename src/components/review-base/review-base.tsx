@@ -4,9 +4,9 @@ import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {postReviewAction} from '../../store/api-actions';
 import {ratingOps, ChosenRating} from '../../types/chosen-rating';
 
-function AddReview(): JSX.Element {
-  const {id} = useParams();
-  const filmId = Number(id);
+function ReviewBase(): JSX.Element {
+  const id = useParams().id || '';
+  const filmId = id;
   const [rating, setRating] = useState<ChosenRating | null>(null);
   const [review, setReview] = useState('');
   const [isFormDisabled, setIsFormDisabled] = useState(false);
@@ -15,17 +15,16 @@ function AddReview(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (rating && filmId) {
+      const numberedRating = Number(rating);
       setIsFormDisabled(true);
-      dispatch(postReviewAction({ text: review, rating: Number(rating), filmId })).finally(
+      dispatch(postReviewAction({ filmId: filmId, rating: numberedRating, comment: review })).finally(
         () => setIsFormDisabled(false)
       );
     }
   };
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    // :(
-    const value = evt.target.value;
-    setRating(value as unknown as ChosenRating);
+    setRating(Number(evt.target.value) as ChosenRating);
   };
 
   const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
@@ -64,7 +63,7 @@ function AddReview(): JSX.Element {
             >
             </textarea>
             <div className="add-review__submit">
-              <button className="add-review__btn" type="submit" disabled={!rating || !review}>Post</button>
+              <button className="add-review__btn" type="submit" disabled={!rating || !review || review.length < 50 }>Post</button>
             </div>
 
           </div>
@@ -74,4 +73,4 @@ function AddReview(): JSX.Element {
   );
 }
 
-export default AddReview;
+export default ReviewBase;

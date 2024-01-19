@@ -4,11 +4,16 @@ import { AuthorizationStatus } from '../../consts/auth-consts';
 import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import {useNavigate} from 'react-router-dom';
+import {getUser} from '../../store/user/user-selectors';
+import {getAuthorizationStatus} from '../../store/user/user-selectors';
 
 
 function UserBlock() {
-  const { authorizationStatus, user } = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   return (
@@ -16,7 +21,9 @@ function UserBlock() {
       {authorizationStatus === AuthorizationStatus.Auth ? (
         <>
           <li className="user-block__item">
-            <div className="user-block__avatar">
+            <div className="user-block__avatar"
+              onClick={() => navigate(AppRoute.MyList)}
+            >
               <img
                 src={user?.avatar ?? 'img/avatar.jpg'}
                 alt="avatar"

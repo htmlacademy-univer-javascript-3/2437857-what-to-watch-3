@@ -1,9 +1,11 @@
-import { MouseEvent } from 'react';
+import {MouseEvent} from 'react';
 import {DEFAULT_GENRE} from '../../consts/genre-const';
 import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {useAppSelector} from '../../hooks/useAppSelector';
 import {setGenre} from '../../store/action';
 import {FilmType} from '../../types/film-type';
+import {getFilms, getGenre} from '../../store/main/main-selectors';
+import {Link} from 'react-router-dom';
 
 export const getGenres = (films: FilmType[]) => [
   DEFAULT_GENRE,
@@ -11,16 +13,17 @@ export const getGenres = (films: FilmType[]) => [
 ];
 
 function GenresList() {
-  const { genre: currentGenre, films } = useAppSelector((state) => state);
-  const allGenres = getGenres(films);
   const dispatch = useAppDispatch();
+  const currentGenre = useAppSelector(getGenre);
+  const films = useAppSelector(getFilms);
+  const allGenres = getGenres(films).slice(0, 10);
 
   const handleGenreClick = (
     e: MouseEvent<HTMLAnchorElement>,
     genre: string
   ) => {
     e.preventDefault();
-    dispatch(setGenre({genre}));
+    dispatch(setGenre(genre));
   };
 
   return (
@@ -32,13 +35,13 @@ function GenresList() {
             currentGenre === genre ? 'catalog__genres-item--active' : ''
           }`}
         >
-          <a
-            href="#"
+          <Link
+            to={`?genre=${genre}`}
             className="catalog__genres-link"
-            onClick={(e) => handleGenreClick(e, genre)}
+            onClick={(evt) => handleGenreClick(evt, genre)}
           >
             {genre}
-          </a>
+          </Link>
         </li>
       ))}
     </ul>
